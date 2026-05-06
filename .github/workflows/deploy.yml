@@ -20,11 +20,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build Marp presentation
-        uses: marp-team/marp-action@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          input: presentation.md
-          output: dist/index.html
+          node-version: '20'
+
+      - name: Install Marp CLI
+        run: npm install -g @marp-team/marp-cli
+
+      - name: Build presentation
+        run: |
+          mkdir -p dist
+          marp presentation.md -o dist/index.html --html
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
@@ -37,6 +44,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
