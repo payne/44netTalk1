@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo '{\"systemMessage\": \"REMINDER: Append this session to /home/mpayne/git/44netTalk1/chat_log.md (user preference set 2026-05-05)\"}'",
+            "statusMessage": "Checking chat log reminder..."
+          }
+        ]
+      }
+    ]
+  }
+}
