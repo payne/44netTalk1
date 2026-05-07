@@ -58,8 +58,12 @@ style: |
     padding: 8px;
   }
   td {
-    border: 1px solid #333;
+    border: 1px solid #555;
     padding: 8px;
+    background: #0d1a2e;
+  }
+  tr:nth-child(even) td {
+    background: #102030;
   }
 ---
 
@@ -73,7 +77,7 @@ style: |
 
 ---
 
-**Presenter:** [Your Call Sign]
+**Presenter:** Matt N3PAY
 **Date:** 2026
 **Duration:** ~40 minutes
 
@@ -83,15 +87,15 @@ style: |
 
 # Agenda
 
-1. **Why this stack?** — The big picture (3 min)
-2. **Banana Pi OpenWRT-One** — The hardware (5 min)
-3. **44Net / AMPRNet** — Ham-licensed IP space (8 min)
-4. **EchoLink** — Voice over IP for hams (5 min)
-5. **The K0USA .94 Repeater & NETs** — Our target (3 min)
-6. **Step-by-step: EchoLink node on Linux** — SVXLink (10 min)
-7. **Step-by-step: Windows 11 Pro alternative** (3 min)
-8. **Putting it all on the Banana Pi** (3 min)
-9. **Q&A & Resources** (← check the last slide)
+1. [**Why this stack?**](#why-this-stack) — The big picture (3 min)
+2. [**Banana Pi OpenWRT-One**](#the-banana-pi-openwrt-one) — The hardware (5 min)
+3. [**44Net / AMPRNet**](#44net--amprnet) — Ham-licensed IP space (8 min)
+4. [**EchoLink**](#echolink--voice-over-ip-for-licensed-hams) — Voice over IP for hams (5 min)
+5. [**The K0USA .94 Repeater & NETs**](#the-k0usa-94-repeater) — Our target (3 min)
+6. [**Step-by-step: EchoLink node on Linux**](#linux-step-by-step-install-svxlink) — SVXLink (10 min)
+7. [**Step-by-step: Windows 11 Pro alternative**](#windows-11-pro--alternative-path) (3 min)
+8. [**Putting it all on the Banana Pi**](#putting-it-all-together-on-the-banana-pi) (3 min)
+9. [**Q&A & Resources**](#resources--links) (← check the last slide)
 
 ---
 
@@ -103,6 +107,10 @@ style: |
 - You're not near a radio — maybe at work, traveling, or portable
 - **EchoLink** lets licensed hams connect via the internet
 - But most EchoLink guides assume a Windows PC on your desk
+
+---
+
+# Why This Stack?
 
 ### Our solution
 
@@ -169,6 +177,10 @@ style: |
 - **AliExpress** — directly from manufacturer
 - **Banana Pi official store** — banana-pi.org
 
+---
+
+# Getting the Banana Pi OpenWRT-One
+
 ### What you also need
 - USB-C power supply (5V/3A minimum) **or** PoE injector
 - microSD card (for initial flash, optional after)
@@ -191,6 +203,10 @@ style: |
 - Only licensed amateur radio operators may request addresses
 - IPs are **globally routable** — reachable from the public internet
 - Free to use — no cost for the address space
+
+---
+
+# 44Net / AMPRNet
 
 ### The address space today
 | Block | Purpose |
@@ -218,6 +234,10 @@ style: |
 - Your ISP sees encrypted-looking IP-in-IP packets
 - The 44.x.x.x address is your *inner* routable address
 - Requires a static or semi-static public IP on your gateway
+
+---
+
+# How 44Net Connectivity Works
 
 ### Option 2: 44Net Connect (new — 2025/2026)
 
@@ -271,6 +291,10 @@ Portal → **Request address space**
 - Request a **/29** (6 usable addresses) or **/30** (2 usable) for starters
 - Describe your use case: *"EchoLink node + experimental networking"*
 
+---
+
+# Registering for 44Net — Step by Step (cont.)
+
 ### Step 4 — Register your gateway
 
 Once approved, portal → **Gateways** → Add Gateway
@@ -306,6 +330,10 @@ sudo wg-quick up 44net
 # Verify your 44 address
 ip addr show 44net
 ```
+
+---
+
+# 44Net Connect — The Easy Path (2025/2026)
 
 ### What you get
 - A `44.x.x.x` address assigned automatically
@@ -373,6 +401,10 @@ ip addr show 44net
 | Mode | FM voice |
 | Coverage | Denver metro + mountains |
 
+---
+
+# The K0USA .94 Repeater
+
 ### The NET concept
 
 A **NET** is a scheduled on-air meeting:
@@ -395,6 +427,10 @@ A **NET** is a scheduled on-air meeting:
 - **Rock solid** — runs for months unattended
 - **Open source** — `github.com/sm0svx/svxlink`
 - **Packaged** — available in Debian, Ubuntu, Raspberry Pi OS
+
+---
+
+# SVXLink — The Engine
 
 ### Hardware you need
 
@@ -460,6 +496,10 @@ alsamixer -c 1
 sudo alsactl store
 ```
 
+---
+
+# Linux Step-by-Step: Audio Level Setup
+
 ### Step 5 — Test audio loopback
 
 ```bash
@@ -490,6 +530,10 @@ sudo usermod -aG dialout $USER
 # Log out and back in for this to take effect
 ```
 
+---
+
+# Linux Step-by-Step: PTT Interface
+
 ### Step 8 — Test PTT manually
 
 ```bash
@@ -519,7 +563,13 @@ s.close()
 MODULE_PLUG_IN_PATH=/usr/lib/svxlink
 CFG_DIR=/etc/svxlink/svxlink.d
 TIMESTAMP_FORMAT=%c
+```
 
+---
+
+# Linux Step-by-Step: SVXLink Main Config
+
+```ini
 [LOGIC:SimplexLogic]
 TYPE=Simplex
 RX=Rx1
@@ -863,6 +913,10 @@ opkg install svxlink kmod-usb-audio alsa-utils \
 > SVXLink may need to be compiled from source if not in opkg.
 > Alternative: run a **Docker container** or **LXC** with Debian inside OpenWrt.
 
+---
+
+# Putting It All Together on the Banana Pi
+
 ### Step 2 — Verify USB audio on OpenWrt
 
 ```bash
@@ -1030,4 +1084,4 @@ journalctl -fu svxlink --since "5 min ago"
 ---
 
 *Slides built with [MARP](https://marp.app) — open source presentation framework*
-*73 de [Your Call Sign]*
+*73 de N3PAY*
